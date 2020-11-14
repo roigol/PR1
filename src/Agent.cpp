@@ -5,10 +5,14 @@
 
 #include "../headers/Agent.h"
 
+//---------------------Agent--------------------------
+Agent::Agent() = default;
 
-Agent::Agent() {}
+Agent::~Agent() = default;
 
-ContactTracer::ContactTracer() {}
+//---------------------CT--------------------------
+
+ContactTracer::ContactTracer() = default;
 
 Agent *ContactTracer::clone() const {
     return new ContactTracer();
@@ -17,11 +21,14 @@ Agent *ContactTracer::clone() const {
 void ContactTracer::act(Session &session) {
     int infectedN = session.dequeueInfected();
     if (infectedN != -1) {
-        Tree * tree =  Tree::BfsTreeMaker(session, infectedN);
-        int toRemove = tree->traceTree();
+        Tree *infectedTree = Tree::BfsTreeMaker(session, infectedN);
+        int toRemove = infectedTree->traceTree();
         session.getGraph()->removeEdges(toRemove);
+        // delete infectedTree;//TODO
     }
 }
+
+//---------------------Virus--------------------------
 
 Virus::Virus(int nodeInd) : nodeInd(nodeInd) {}
 
@@ -29,17 +36,16 @@ Agent *Virus::clone() const {
     return new Virus(nodeInd);
 }
 
-int Virus::getNodeInd() {
+int Virus::getNodeInd() const {
     return nodeInd;
 }
 
-
 void Virus::act(Session &session) {
     Graph *g = session.getGraph();
-    if (g->infectedVertex[nodeInd]) {
-        int minN = g->getMinVFNeighbor(nodeInd);
+    if (g->getInfectedNodes()[nodeInd]) {
+        int minN = g->NodeToInfect(nodeInd);
         session.addAgent(Virus(minN));
-        g->carrierVertex[minN] = true;
+        g->getCarrierNodes()[minN] = true;
     } else {
         g->infectNode(nodeInd);
         session.enqueueInfected(nodeInd);

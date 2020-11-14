@@ -8,26 +8,32 @@ class Graph {
 public:
     Graph(std::vector<std::vector<int>> matrix);
 
-    int size();
-
-    int getMinVFNeighbor(int a) ;
-
-    void infectNode(int nodeInd) ;
+    void infectNode(int nodeInd);
 
     bool isInfected(int nodeInd);
+
+    //added
+
+    int size();
+
+    int NodeToInfect(int a);
 
     bool isCarrier(int nodeInd);
 
     void removeEdges(int nodeInd);
 
+    bool done();
+
     std::vector<std::vector<int>> getEdges();
 
-    std::vector<bool> infectedVertex;
-    std::vector<bool> carrierVertex;
+    std::vector<bool> getInfectedNodes();
+
+    std::vector<bool> getCarrierNodes();
 
 private:
+    std::vector<bool> infectedNodes;
+    std::vector<bool> carrierNodes;
     std::vector<std::vector<int>> edges;
-
 };
 
 #endif

@@ -10,39 +10,46 @@ using json = nlohmann::json;
 using namespace std;
 
 
-
-Session::Session(const string &path) : g({}), currCycle(0), treeType(), agents(), infectedQueue() {
+Session::Session(const string &path) : g({}), currCycle(0), treeType(), agents(), infectedQueue() {//TODO change order
     ifstream i("path");
     json j;
     //j << i;
     i >> j;
     g = Graph(j["graph"]);
-    treeType = parseTree(j["tree"]);
-    agents = parseAgents(j["agents"]);
+    parseTreeType(j["tree"]);
+    parseAgents(j["agents"]);
 
 }
 
-TreeType Session::parseTree(string type) { //check if needs to change to string& type
+void Session::parseTreeType(string type) { //check if needs to change to string& type
     if (type == "M")
-        return MaxRank;
-    if (type == "R")
-        return Root;
+        treeType = MaxRank;
+    else if (type == "R")
+        treeType = Root;
     else
-        return Cycle;
+        treeType =  Cycle;
 }
 
-vector<Agent *> Session::parseAgents(const vector<tuple<string, int>> &agent) {
+void Session::parseAgents(const vector<tuple<string, int>> &agent) {
     for (auto i: agent) {
         if (get<0>(i) == "V") {
             agents.push_back(new Virus(get<1>(i)));
+            g.infectNode(get<1>(i));//TODO methods to add new viruses
         } else
             agents.push_back(new ContactTracer());
     }
-
 }
 
 
-void Session::simulate() {}
+void Session::simulate() {
+    while(!g.done()){
+        int size = agents.size();
+        for(int i = 0; i < size; i++){
+            agents[i]->act(*this);
+        }
+        currCycle++;
+    }
+}
 
 void Session::addAgent(const Agent &agent) {
     agents.push_back(agent.clone());
@@ -64,22 +71,18 @@ int Session::dequeueInfected() {
     return i;
 }
 
-TreeType Session::getTreeType() const {  // amit changed
-    return treeType;  // should i write instead just "return treeType"?
+TreeType Session::getTreeType() const {
+    return treeType;
 }
 
-Graph * Session::getGraph() { // amit changed
+Graph *Session::getGraph() { //cons??
     return &g;
 }
 
 
-int Session::getCurrCycle() const{
+int Session::getCurrCycle() const {
     return currCycle;
 }
-
-
-//int size = agents.size();
-//vector of new viruses
 
 
 

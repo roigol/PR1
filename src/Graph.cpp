@@ -4,12 +4,14 @@
 
 #include "../headers/Graph.h"
 
+#include <utility>
 
 
 
-Graph::Graph(std::vector<std::vector<int>> matrix) : edges(matrix) {}
 
-int Graph::getMinVFNeighbor(int a) {
+Graph::Graph(std::vector<std::vector<int>> matrix) : edges(std::move(matrix)) {}
+
+int Graph::NodeToInfect(int a) {
     int min = -1;
     int counter = 0;
     bool found = false;
@@ -24,15 +26,15 @@ int Graph::getMinVFNeighbor(int a) {
 }
 
 void Graph::infectNode(int nodeInd) {
-    infectedVertex[nodeInd] = true;
+    infectedNodes[nodeInd] = true;
 }
 
 bool Graph::isInfected(int nodeInd) {
-    return (infectedVertex[nodeInd]);
+    return (infectedNodes[nodeInd]);
 }
 
 bool Graph::isCarrier(int nodeInd) {
-    return (carrierVertex[nodeInd]);
+    return (carrierNodes[nodeInd]);
 }
 
 void Graph::removeEdges(int nodeInd) {
@@ -50,4 +52,16 @@ int Graph::size() {
 
 std::vector<std::vector<int>> Graph::getEdges() {
     return edges;
+}
+
+bool Graph::done() {
+    return false;//TODO !!!!!
+}
+
+std::vector<bool> Graph::getInfectedNodes() {
+    return infectedNodes;
+}
+
+std::vector<bool> Graph::getCarrierNodes() {
+    return carrierNodes;
 }

@@ -34,23 +34,28 @@ public:
 
     Graph *getGraph();
 
-    void enqueueInfected(int a);
+    void enqueueInfected(int);
 
     int dequeueInfected();
 
+    //added
+
     TreeType getTreeType() const;
 
-    TreeType parseTree(string type);
+    void parseTreeType(string type);
 
-    vector<Agent *> parseAgents(const vector<tuple<string, int>> &agent);
+    void parseAgents(const vector<tuple<string, int>> &agent);
 
     int getCurrCycle() const ;
 
 private:
     Graph g;
-    int currCycle;
     TreeType treeType;
     std::vector<Agent *> agents;
+
+    //added
+
+    int currCycle;
     std::queue<int> infectedQueue;
 };
 

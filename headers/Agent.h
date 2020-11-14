@@ -11,7 +11,11 @@ class Session;
 class Agent {
 public:
     Agent();
-    virtual Agent* clone() const =0 ;
+
+    virtual ~Agent();
+
+    virtual Agent *clone() const = 0;
+
     virtual void act(Session &session) = 0;
 
 };
@@ -19,17 +23,20 @@ public:
 class ContactTracer : public Agent {
 public:
     ContactTracer();
-    Agent* clone() const;
+
+    virtual Agent *clone() const;
+
     virtual void act(Session &session);
 };
 
 
 class Virus : public Agent {
 public:
-    int getNodeInd() ;
+    int getNodeInd() const;
 
-    Virus(int nodeInd) ;
-    Agent* clone() const;
+    Virus(int nodeInd);
+
+    virtual Agent *clone() const;
 
     virtual void act(Session &session);
 

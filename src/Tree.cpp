@@ -5,10 +5,11 @@
 
 #include "../headers/Tree.h"
 
-class Session;
+//class Session;
 
+//---------------------Tree--------------------------
 
-Tree::Tree(int rootLabel): node(rootLabel) {}
+Tree::Tree(int rootLabel) : node(rootLabel) {}
 
 void Tree::addChild(const Tree &child) {}
 
@@ -42,60 +43,92 @@ Tree *Tree::BfsTreeMaker(Session &session, int node) {
     bool visited[g->size()];
     for (int i = 0; i < g->size(); i++)//init visited
         visited[i] = false;
-    std::vector<Tree *> queue;
+    std::queue<Tree *> queue;
     visited[node] = true;
-    Tree *root = Tree::createTree(session, node);
-    Tree *output = root;
-    Tree *temp;
-    queue.push_back(root);
+    Tree *currTree = Tree::createTree(session, node);
+    Tree *output = currTree;
+    Tree *child;
+    queue.push(currTree);
     while (!queue.empty()) {
+        currTree = queue.front();
+        queue.pop();
         for (int i = 0; i < g->size(); i++) {
-            if (g->getEdges()[node][i] == 1 && !visited[i]) {//runs on node's neighbors
+            if (g->getEdges()[currTree->node][i] == 1 && !visited[i]) {//runs on node's neighbors
                 visited[i] = true;
-                temp = Tree::createTree(session, node);
-                root->addChild(*temp);
-                queue.push_back(temp);
+                child = Tree::createTree(session, i);
+                currTree->addChild(*child);
+                queue.push(child);
             }
         }
     }
     return output;
 }
 
+//---------------------CycleTree--------------------------
 
 CycleTree::CycleTree(int rootLabel, int currCycle) : Tree(rootLabel), currCycle(currCycle) {
 
 }
 
-int CycleTree::traceTree() {}
+int CycleTree::traceTree() {
+    CycleTree *curr = this;
+    this->traceTree2(curr, 0);
+    return curr->node;
+}
 
+void CycleTree::traceTree2(CycleTree *curr, int cycle) {
+    if (curr->children.empty() | (curr->currCycle == cycle))
+        return;
+    else {
+        curr = dynamic_cast<CycleTree *>(curr->children[0]);
+        cycle++;
+        traceTree2(curr, cycle);
+    }
+}
+
+Tree *CycleTree::clone() const {
+    return new CycleTree(node, currCycle);
+}
+
+//---------------------MaxRank--------------------------
 
 MaxRankTree::MaxRankTree(int rootLabel) : Tree(rootLabel) {}
 
 
 int MaxRankTree::traceTree() {
     MaxRankTree *maxRT = this;
-    this->traceTree2(maxRT);
+    this->traceTree2(maxRT, this);
     return maxRT->node;
 }
 
-int MaxRankTree::traceTree2(MaxRankTree *maxRT) {
-    if (children.size() == 0)
-        return 0;
+void MaxRankTree::traceTree2(MaxRankTree *maxRT, MaxRankTree *temp) {
+    if (temp->children.empty())
+        return;
     else {
-        if (children.size() > maxRT->getRank())
-            maxRT = this;//???????????????????????????????????
-        for (int i = 0; i < this->getRank(); i++)
-            this->traceTree2(dynamic_cast<MaxRankTree *>(children[i]));
+        if (temp->getRank() > maxRT->getRank())
+            maxRT = temp;
+        for (auto & i : temp->children)
+            this->traceTree2(maxRT, dynamic_cast<MaxRankTree *>(i));
     }
 }
 
-int MaxRankTree::getRank() {
+int MaxRankTree::getRank() const {
     return children.size();
 }
+
+Tree *MaxRankTree::clone() const {
+    return new MaxRankTree(node);
+}
+
+//---------------------RootTree--------------------------
 
 RootTree::RootTree(int rootLabel) : Tree(rootLabel) {}
 
 int RootTree::traceTree() {
     return node;
+}
+
+Tree *RootTree::clone() const {
+    return new RootTree(node);
 }
 
