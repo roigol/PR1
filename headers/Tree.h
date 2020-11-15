@@ -21,7 +21,12 @@ public:
     virtual Tree *clone() const = 0 ;
 
     static Tree *BfsTreeMaker(Session &, int);
-
+    Tree& getLeftChild();
+    const vector<Tree*>& getChildren()const; // TODO Check  &getChildren why the & there.
+    int getNode()const;
+    bool hasChildren();
+    int numOfChildren() const; // MAYBE FOR LATER
+    int getRank() const;
 protected:
     int node;
     std::vector<Tree *> children;
@@ -38,7 +43,7 @@ public:
     virtual Tree *clone() const;
 
 private:
-    void traceTree2(CycleTree *, int);
+    int traceTree2(Tree & currT, int cycle) ;
 
     int currCycle;
 };
@@ -51,12 +56,12 @@ public:
 
     //added
 
-    int getRank() const;
+
 
     virtual Tree *clone() const;
 
 private:
-    void traceTree2(MaxRankTree * , MaxRankTree *);
+    void traceTree2(Tree & currT , Tree &temp);
 };
 
 class RootTree : public Tree {

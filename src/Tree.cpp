@@ -1,17 +1,16 @@
-//
-// Created by spl211 on 10/11/2020.
-//
-
 
 #include "../headers/Tree.h"
-
-//class Session;
 
 //---------------------Tree--------------------------
 
 Tree::Tree(int rootLabel) : node(rootLabel) {}
 
-void Tree::addChild(const Tree &child) {}
+
+//TODO copy constructor:
+
+void Tree::addChild(const Tree &child) {
+    children.push_back(child.clone());  //TODO check.
+}
 
 
 Tree *Tree::createTree(const Session &session, int rootLabel) {
@@ -64,6 +63,29 @@ Tree *Tree::BfsTreeMaker(Session &session, int node) {
     return output;
 }
 
+Tree &Tree::getLeftChild() {
+    return *children[0];
+}
+
+int Tree::getNode() const {  // check for const
+    return this->node;
+}
+
+bool Tree::hasChildren() {
+    return this->children.empty();
+}
+
+int Tree::numOfChildren() const {
+    return children.size();
+}
+
+int Tree::getRank() const {
+    return children.size();
+}
+
+const vector<Tree *> &Tree::getChildren() const {
+    return children;
+}
 //---------------------CycleTree--------------------------
 
 CycleTree::CycleTree(int rootLabel, int currCycle) : Tree(rootLabel), currCycle(currCycle) {
@@ -71,50 +93,48 @@ CycleTree::CycleTree(int rootLabel, int currCycle) : Tree(rootLabel), currCycle(
 }
 
 int CycleTree::traceTree() {
-    CycleTree *curr = this;
-    this->traceTree2(curr, 0);
-    return curr->node;
+    return traceTree2(*this, currCycle);
+} // Amit fixed and by adding 2 methods - hasChildren and getLeftChild.
+
+
+int CycleTree::traceTree2(Tree &currT, int cycle) {
+    if (currT.hasChildren() || cycle == 0)
+        return currT.getNode();
+    else
+        traceTree2(currT.getLeftChild(), cycle - 1);
+
 }
 
-void CycleTree::traceTree2(CycleTree *curr, int cycle) {
-    if (curr->children.empty() | (curr->currCycle == cycle))
-        return;
-    else {
-        curr = dynamic_cast<CycleTree *>(curr->children[0]);
-        cycle++;
-        traceTree2(curr, cycle);
-    }
-}
 
 Tree *CycleTree::clone() const {
     return new CycleTree(node, currCycle);
 }
 
+
+
+
 //---------------------MaxRank--------------------------
 
 MaxRankTree::MaxRankTree(int rootLabel) : Tree(rootLabel) {}
 
-
-int MaxRankTree::traceTree() {
+int MaxRankTree::traceTree() { // TODO IN PROGRESS.
     MaxRankTree *maxRT = this;
-    this->traceTree2(maxRT, this);
-    return maxRT->node;
+    MaxRankTree *temp=this;
+    this->traceTree2(*maxRT->clone(), *temp->clone()); // TODO check
+    return maxRT->getNode();
 }
 
-void MaxRankTree::traceTree2(MaxRankTree *maxRT, MaxRankTree *temp) {
-    if (temp->children.empty())
+void MaxRankTree::traceTree2(Tree &maxRT, Tree &temp) {
+    if (!temp.hasChildren())
         return;
     else {
-        if (temp->getRank() > maxRT->getRank())
-            maxRT = temp;
-        for (auto & i : temp->children)
-            this->traceTree2(maxRT, dynamic_cast<MaxRankTree *>(i));
+        if (temp.getRank() > maxRT.getRank()) //TODO check about the depth.
+            maxRT = temp.clone();  // TODO copy constructor.
+        for (auto & i : temp.getChildren())
+            this->traceTree2(maxRT, *i->clone());
     }
 }
 
-int MaxRankTree::getRank() const {
-    return children.size();
-}
 
 Tree *MaxRankTree::clone() const {
     return new MaxRankTree(node);
