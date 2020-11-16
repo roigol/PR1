@@ -8,6 +8,7 @@ class Session;
 
 class Tree {
 public:
+
     Tree(int rootLabel);
 
     void addChild(const Tree &child);
@@ -18,22 +19,33 @@ public:
 
     //added
 
-    virtual Tree *clone() const = 0 ;
+    virtual Tree *clone() const = 0;
 
     static Tree *BfsTreeMaker(Session &, int);
-    Tree& getLeftChild();
-    const vector<Tree*>& getChildren()const; // TODO Check  &getChildren why the & there.
-    int getNode()const;
+
+    Tree &getLeftChild() const;
+
+    std::vector<Tree *> getChildren() const; // TODO Check  &getChildren why the & there.
+
+    int getNode() const;
+
     bool hasChildren();
-    int numOfChildren() const; // MAYBE FOR LATER
+
+    int numOfChildren() const; // TODO MAYBE FOR LATER??
+
     int getRank() const;
+
 protected:
+
     int node;
+
     std::vector<Tree *> children;
+
 };
 
 class CycleTree : public Tree {
 public:
+
     CycleTree(int rootLabel, int currCycle);
 
     virtual int traceTree();
@@ -43,6 +55,7 @@ public:
     virtual Tree *clone() const;
 
 private:
+
     int traceTree2(Tree & currT, int cycle) ;
 
     int currCycle;
@@ -50,22 +63,22 @@ private:
 
 class MaxRankTree : public Tree {
 public:
+
     MaxRankTree(int rootLabel);
 
     virtual int traceTree();
 
     //added
 
-
-
     virtual Tree *clone() const;
 
 private:
-    void traceTree2(Tree & currT , Tree &temp);
+    void traceTree2(Tree *currT, Tree *temp);
 };
 
 class RootTree : public Tree {
 public:
+
     RootTree(int rootLabel);
 
     virtual int traceTree();

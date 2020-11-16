@@ -37,7 +37,7 @@ Tree *Tree::createTree(const Session &session, int rootLabel) {
 }
 
 
-Tree *Tree::BfsTreeMaker(Session &session, int node) {
+Tree *Tree::BfsTreeMaker(Session &session, int node) {// session should be const?
     Graph *g = session.getGraph();
     bool visited[g->size()];
     for (int i = 0; i < g->size(); i++)//init visited
@@ -63,7 +63,7 @@ Tree *Tree::BfsTreeMaker(Session &session, int node) {
     return output;
 }
 
-Tree &Tree::getLeftChild() {
+Tree &Tree::getLeftChild() const {
     return *children[0];
 }
 
@@ -83,7 +83,7 @@ int Tree::getRank() const {
     return children.size();
 }
 
-const vector<Tree *> &Tree::getChildren() const {
+vector<Tree *> Tree::getChildren() const {
     return children;
 }
 //---------------------CycleTree--------------------------
@@ -97,8 +97,8 @@ int CycleTree::traceTree() {
 } // Amit fixed and by adding 2 methods - hasChildren and getLeftChild.
 
 
-int CycleTree::traceTree2(Tree &currT, int cycle) {
-    if (currT.hasChildren() || cycle == 0)
+int CycleTree::traceTree2(Tree &currT, int cycle) {// TODO check if should change to * instead of &.
+    if (!currT.hasChildren() || cycle == 0)
         return currT.getNode();
     else
         traceTree2(currT.getLeftChild(), cycle - 1);
@@ -119,19 +119,19 @@ MaxRankTree::MaxRankTree(int rootLabel) : Tree(rootLabel) {}
 
 int MaxRankTree::traceTree() { // TODO IN PROGRESS.
     MaxRankTree *maxRT = this;
-    MaxRankTree *temp=this;
-    this->traceTree2(*maxRT->clone(), *temp->clone()); // TODO check
+    MaxRankTree *temp = this;
+    this->traceTree2(maxRT->clone(), temp->clone()); // TODO check
     return maxRT->getNode();
 }
 
-void MaxRankTree::traceTree2(Tree &maxRT, Tree &temp) {
-    if (!temp.hasChildren())
+void MaxRankTree::traceTree2(Tree *maxRT, Tree *temp) {
+    if (!temp->hasChildren())
         return;
     else {
-        if (temp.getRank() > maxRT.getRank()) //TODO check about the depth.
-            maxRT = temp.clone();  // TODO copy constructor.
-        for (auto & i : temp.getChildren())
-            this->traceTree2(maxRT, *i->clone());
+        if (temp->getRank() > maxRT->getRank()) //TODO check about the depth.
+//            maxRT = temp.clone();  // TODO copy constructor.
+        for (auto & i : temp->getChildren())
+            this->traceTree2(maxRT, i->clone());
     }
 }
 

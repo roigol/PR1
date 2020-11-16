@@ -71,7 +71,7 @@ TreeType Session::getTreeType() const {
     return treeType;
 }
 
-Graph *Session::getGraph() { //cons??
+Graph *Session::getGraph()  { //cons??
     return &g;
 }
 
