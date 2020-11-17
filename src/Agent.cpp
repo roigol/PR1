@@ -24,7 +24,7 @@ void ContactTracer::act(Session &session) {
         Tree *infectedTree = Tree::BfsTreeMaker(session, infectedN);
         int toRemove = infectedTree->traceTree();
         session.getGraph()->removeEdges(toRemove);
-        // delete infectedTree;//TODO
+         delete infectedTree;
     }
 }
 

@@ -40,6 +40,10 @@ public:
 
     //added
 
+    virtual ~Session();
+
+    void clear();
+
     TreeType getTreeType() const;
 
     void parseTreeType(string type);

@@ -6,7 +6,7 @@ using json = nlohmann::json;
 using namespace std;
 
 
-Session::Session(const string &path) : g({}), treeType(), agents(), currCycle(0), infectedQueue(){
+Session::Session(const string &path) : g({}), treeType(), agents(), currCycle(0), infectedQueue() {
     ifstream i("path");
     json j;
     //j << i;
@@ -79,6 +79,18 @@ Graph *Session::getGraph() { //cons??
 
 int Session::getCurrCycle() const {
     return currCycle;
+}
+
+Session::~Session() { clear(); }
+
+void Session::clear() {
+    for (Agent *agent: agents) {
+        if (agent != nullptr) {
+            delete agent;
+            agent = nullptr;
+        }
+    }
+    agents.clear();
 }
 
 

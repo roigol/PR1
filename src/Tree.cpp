@@ -107,12 +107,12 @@ Tree::Tree(const Tree &other) : node(other.node), children({}) {
        }
 }
 
-// copy assignment operator
+// copy assignment operator//TODO move assignment operator =
 const Tree &Tree::operator=(const Tree &other) { // TODO check return type
     if (this != &other) {
         clear();
         node = other.node;
-        for (Tree *tree: children) {
+        for (Tree *tree: other.children) {
             addChild(*tree);
         }
     }
