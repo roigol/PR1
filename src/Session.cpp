@@ -6,7 +6,7 @@ using json = nlohmann::json;
 using namespace std;
 
 
-Session::Session(const string &path) : g({}), currCycle(0), treeType(), agents(), infectedQueue() {//TODO change order
+Session::Session(const string &path) : g({}), treeType(), agents(), currCycle(0), infectedQueue() {
     ifstream i("path");
     json j;
     //j << i;

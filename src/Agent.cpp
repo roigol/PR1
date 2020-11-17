@@ -48,6 +48,7 @@ void Virus::act(Session &session) {
         g->getCarrierNodes()[minN] = true;
     } else {
         g->infectNode(nodeInd);
+        g->getCarrierNodes()[nodeInd] = false;
         session.enqueueInfected(nodeInd);
     }
 }

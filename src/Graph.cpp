@@ -54,7 +54,7 @@ std::vector<std::vector<int>> Graph::getEdges() {
     return edges;
 }
 
-bool Graph::done() {
+bool Graph::done() {//TODO static?
     return false;//TODO !!!!!
 }
 

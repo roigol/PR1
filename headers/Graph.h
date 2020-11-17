@@ -2,7 +2,7 @@
 #define GRAPH_H_
 
 #include <vector>
-
+//include "Session.h"
 
 class Graph {
 public:
@@ -22,7 +22,7 @@ public:
 
     void removeEdges(int nodeInd);
 
-    bool done();
+    static bool done();
 
     std::vector<std::vector<int>> getEdges();
 
