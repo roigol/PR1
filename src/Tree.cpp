@@ -86,6 +86,41 @@ int Tree::getRank() const {
 vector<Tree *> Tree::getChildren() const {
     return children;
 }
+
+Tree::~Tree() { clear(); }
+
+void Tree::clear() {
+    for (Tree *tree : children) {
+        if (tree != nullptr) {
+            delete tree;
+            tree = nullptr;
+        }
+        children.clear();
+    }
+}
+
+//TODO copy constructor
+Tree::Tree(const Tree &other) : node(other.node), children({}) {
+       for (int i = 0; i < children.size(); i++) {
+           Tree *tree = other.children[i]->clone();
+           children.push_back(tree);
+       }
+}
+
+// copy assignment operator
+const Tree &Tree::operator=(const Tree &other) { // TODO check return type
+    if (this != &other) {
+        clear();
+        node = other.node;
+        for (Tree *tree: children) {
+            addChild(*tree);
+        }
+    }
+    return *this;
+}
+
+
+
 //---------------------CycleTree--------------------------
 
 CycleTree::CycleTree(int rootLabel, int currCycle) : Tree(rootLabel), currCycle(currCycle) {
@@ -117,10 +152,10 @@ Tree *CycleTree::clone() const {
 
 MaxRankTree::MaxRankTree(int rootLabel) : Tree(rootLabel) {}
 
-int MaxRankTree::traceTree() { // TODO IN PROGRESS.
+int MaxRankTree::traceTree() {
     MaxRankTree *maxRT = this;
     MaxRankTree *temp = this;
-    this->traceTree2(maxRT->clone(), temp->clone()); // TODO check
+    this->traceTree2(maxRT->clone(), temp->clone());
     return maxRT->getNode();
 }
 
@@ -128,9 +163,9 @@ void MaxRankTree::traceTree2(Tree *maxRT, Tree *temp) {
     if (!temp->hasChildren())
         return;
     else {
-        if (temp->getRank() > maxRT->getRank()) //TODO check about the depth.
-//            maxRT = temp.clone();  // TODO copy constructor.
-        for (auto & i : temp->getChildren())
+        if (temp->getRank() > maxRT->getRank())
+            maxRT = temp->clone();
+        for (auto &i : temp->getChildren())
             this->traceTree2(maxRT, i->clone());
     }
 }

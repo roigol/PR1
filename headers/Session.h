@@ -48,6 +48,7 @@ public:
 
     int getCurrCycle() const ;
 
+
 private:
     Graph g;
     TreeType treeType;

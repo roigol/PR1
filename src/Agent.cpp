@@ -46,9 +46,11 @@ void Virus::act(Session &session) {
         int minN = g->NodeToInfect(nodeInd);
         session.addAgent(Virus(minN));
         g->getCarrierNodes()[minN] = true;
+        g->increaseNumOfCarrierNodes();
     } else {
         g->infectNode(nodeInd);
         g->getCarrierNodes()[nodeInd] = false;
+        g->decreaseNumOfCarrierNodes();
         session.enqueueInfected(nodeInd);
     }
 }

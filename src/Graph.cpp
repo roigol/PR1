@@ -7,8 +7,6 @@
 #include <utility>
 
 
-
-
 Graph::Graph(std::vector<std::vector<int>> matrix) : edges(std::move(matrix)) {}
 
 int Graph::NodeToInfect(int a) {
@@ -55,7 +53,7 @@ std::vector<std::vector<int>> Graph::getEdges() {
 }
 
 bool Graph::done() {//TODO static?
-    return false;//TODO !!!!!
+    return numOfCarrierNodes == 0;
 }
 
 std::vector<bool> Graph::getInfectedNodes() {
@@ -64,4 +62,16 @@ std::vector<bool> Graph::getInfectedNodes() {
 
 std::vector<bool> Graph::getCarrierNodes() {
     return carrierNodes;
+}
+
+void Graph::increaseNumOfCarrierNodes() {
+    numOfCarrierNodes++;
+}
+
+void Graph::decreaseNumOfCarrierNodes() {
+    numOfCarrierNodes--;
+}
+
+void Graph::setNumOfCarrierNodes() {
+    numOfCarrierNodes = 0;
 }

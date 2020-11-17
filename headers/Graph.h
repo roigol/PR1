@@ -22,7 +22,7 @@ public:
 
     void removeEdges(int nodeInd);
 
-    static bool done();
+    bool done();
 
     std::vector<std::vector<int>> getEdges();
 
@@ -30,10 +30,17 @@ public:
 
     std::vector<bool> getCarrierNodes();
 
+    void increaseNumOfCarrierNodes();
+
+    void decreaseNumOfCarrierNodes();
+
+    void setNumOfCarrierNodes();
+
 private:
     std::vector<bool> infectedNodes;
     std::vector<bool> carrierNodes;
     std::vector<std::vector<int>> edges;
+    int numOfCarrierNodes;
 };
 
 #endif

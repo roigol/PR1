@@ -6,12 +6,13 @@ using json = nlohmann::json;
 using namespace std;
 
 
-Session::Session(const string &path) : g({}), treeType(), agents(), currCycle(0), infectedQueue() {
+Session::Session(const string &path) : g({}), treeType(), agents(), currCycle(0), infectedQueue(){
     ifstream i("path");
     json j;
     //j << i;
     i >> j;
     g = Graph(j["graph"]);
+    g.setNumOfCarrierNodes();
     parseTreeType(j["tree"]);
     parseAgents(j["agents"]);
 
@@ -23,7 +24,7 @@ void Session::parseTreeType(string type) { //check if needs to change to string&
     else if (type == "R")
         treeType = Root;
     else
-        treeType =  Cycle;
+        treeType = Cycle;
 }
 
 void Session::parseAgents(const vector<tuple<string, int>> &agent) {
@@ -38,9 +39,9 @@ void Session::parseAgents(const vector<tuple<string, int>> &agent) {
 
 
 void Session::simulate() {
-    while(!g.done()){
+    while (!g.done()) {
         int size = agents.size();
-        for(int i = 0; i < size; i++){
+        for (int i = 0; i < size; i++) {
             agents[i]->act(*this);
         }
         currCycle++;
@@ -71,7 +72,7 @@ TreeType Session::getTreeType() const {
     return treeType;
 }
 
-Graph *Session::getGraph()  { //cons??
+Graph *Session::getGraph() { //cons??
     return &g;
 }
 
@@ -79,6 +80,7 @@ Graph *Session::getGraph()  { //cons??
 int Session::getCurrCycle() const {
     return currCycle;
 }
+
 
 
 

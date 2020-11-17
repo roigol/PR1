@@ -12,11 +12,15 @@ class Agent {
 public:
     Agent();
 
+    virtual void act(Session &session) = 0;
+// added:
+    virtual Agent *clone() const = 0;
+//RULL OF FIVE:
+
     virtual ~Agent();
 
-    virtual Agent *clone() const = 0;
 
-    virtual void act(Session &session) = 0;
+
 
 };
 

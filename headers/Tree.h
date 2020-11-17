@@ -18,7 +18,16 @@ public:
     virtual int traceTree() = 0;
 
     //added
-//TODO DASD ASDASD
+
+    // RULE OF FIVE
+    virtual ~Tree();
+
+    const Tree& operator=(const Tree& other);
+
+    Tree (const Tree&);
+
+    void clear();
+
     virtual Tree *clone() const = 0;
 
     static Tree *BfsTreeMaker(Session &, int);
