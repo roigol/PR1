@@ -5,7 +5,7 @@
 #include "Session.h"
 
 class Session;
-// TODO ASDASDSADASDASDSADASD
+// TODO ASDASDSADASDASDSADAS
 class Tree {
 public:
 
@@ -18,7 +18,7 @@ public:
     virtual int traceTree() = 0;
 
     //added
-
+//TODO DASD ASDASD
     virtual Tree *clone() const = 0;
 
     static Tree *BfsTreeMaker(Session &, int);

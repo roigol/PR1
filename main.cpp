@@ -2,7 +2,6 @@
 #include "./headers/Session.h"
 #include <fstream>
 #include "./headers/json.hpp"
-#include <boost/algorithm/string.hpp> // check if it possible
 using json = nlohmann::json;
 using namespace std;
 
