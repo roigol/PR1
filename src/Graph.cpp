@@ -7,7 +7,7 @@
 #include <utility>
 
 
-Graph::Graph(std::vector<std::vector<int>> matrix) : edges(std::move(matrix)) {}
+Graph::Graph(std::vector<std::vector<int>> matrix) : edges(std::move(matrix)), numOfCarrierNodes(0) {}
 
 int Graph::NodeToInfect(int a) {
     int min = -1;
@@ -52,7 +52,7 @@ std::vector<std::vector<int>> Graph::getEdges() {
     return edges;
 }
 
-bool Graph::done() {//TODO static?
+bool Graph::done() const {
     return numOfCarrierNodes == 0;
 }
 

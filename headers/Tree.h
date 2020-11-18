@@ -40,8 +40,6 @@ public:
 
     bool hasChildren();
 
-    int numOfChildren() const; // TODO MAYBE FOR LATER??
-
     int getRank() const;
 
 protected:

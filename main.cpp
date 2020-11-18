@@ -1,7 +1,6 @@
 #include <iostream>
 #include "./headers/Session.h"
-#include <fstream>
-#include "./headers/json.hpp"
+
 using json = nlohmann::json;
 using namespace std;
 
@@ -14,6 +13,7 @@ int main(int argc, char** argv){
 
     Session sess(argv[1]);
     sess.simulate();
+
 //TODO check
 //TODO delete session
     return 0;

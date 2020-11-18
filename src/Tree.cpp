@@ -1,6 +1,6 @@
 
 #include "../headers/Tree.h"
-// TODO SADASDASDASDASDSADADS
+
 //---------------------Tree--------------------------
 
 Tree::Tree(int rootLabel) : node(rootLabel) {}
@@ -75,10 +75,6 @@ bool Tree::hasChildren() {
     return this->children.empty();
 }
 
-int Tree::numOfChildren() const {
-    return children.size();
-}
-
 int Tree::getRank() const {
     return children.size();
 }
@@ -135,9 +131,10 @@ int CycleTree::traceTree() {
 int CycleTree::traceTree2(Tree &currT, int cycle) {// TODO check if should change to * instead of &.
     if (!currT.hasChildren() || cycle == 0)
         return currT.getNode();
-    else
+    else {
         traceTree2(currT.getLeftChild(), cycle - 1);
-
+    }
+    return currT.getNode();//TODO check - Roi added because it told me we need to return something.
 }
 
 

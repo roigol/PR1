@@ -46,12 +46,13 @@ public:
 
     TreeType getTreeType() const;
 
-    void parseTreeType(string type);
+    void parseTreeType(const string& type);
 
     void parseAgents(const vector<tuple<string, int>> &agent);
 
     int getCurrCycle() const ;
 
+    void creatOutputFile();
 
 private:
     Graph g;

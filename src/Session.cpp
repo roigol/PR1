@@ -7,9 +7,8 @@ using namespace std;
 
 
 Session::Session(const string &path) : g({}), treeType(), agents(), currCycle(0), infectedQueue() {
-    ifstream i("path");
+    ifstream i(path);
     json j;
-    //j << i;
     i >> j;
     g = Graph(j["graph"]);
     g.setNumOfCarrierNodes();
@@ -18,7 +17,7 @@ Session::Session(const string &path) : g({}), treeType(), agents(), currCycle(0)
 
 }
 
-void Session::parseTreeType(string type) { //check if needs to change to string& type
+void Session::parseTreeType(const string& type) { //check if needs to change to string& type
     if (type == "M")
         treeType = MaxRank;
     else if (type == "R")
@@ -46,6 +45,8 @@ void Session::simulate() {
         }
         currCycle++;
     }
+    creatOutputFile();
+    delete this;
 }
 
 void Session::addAgent(const Agent &agent) {
@@ -91,6 +92,20 @@ void Session::clear() {
         }
     }
     agents.clear();
+}
+
+void Session::creatOutputFile() {
+    json output;
+    output["graph"] = g.getEdges();
+    vector<int> infected;
+    for (int i = 0; i < g.getInfectedNodes().size(); i++) {
+        if (g.getInfectedNodes()[i])
+            infected.push_back(i);
+    }
+    output["infected"] = infected;
+    infected.clear();//TODO check if needed
+    std::ofstream file("output.json");
+    file << output;
 }
 
 

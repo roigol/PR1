@@ -22,7 +22,7 @@ public:
 
     void removeEdges(int nodeInd);
 
-    bool done();
+    bool done() const;
 
     std::vector<std::vector<int>> getEdges();
 
