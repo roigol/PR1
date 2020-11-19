@@ -22,9 +22,13 @@ public:
     // RULE OF FIVE
     virtual ~Tree();
 
-    const Tree& operator=(const Tree& other);
+    Tree& operator=(const Tree& other);
 
-    Tree (const Tree&);
+    Tree& operator=(Tree &&other) noexcept;
+
+    Tree (const Tree&) ;
+
+    Tree(Tree&&) noexcept;
 
     void clear();
 
@@ -63,7 +67,7 @@ public:
 
 private:
 
-    int traceTree2(Tree & currT, int cycle) ;
+    int traceTree2(Tree* currT, int cycle) ;
 
     int currCycle;
 };
@@ -80,7 +84,7 @@ public:
     virtual Tree *clone() const;
 
 private:
-    void traceTree2(Tree *currT, Tree *temp);
+    Tree* traceTree2(Tree *currT, Tree *curr);
 };
 
 class RootTree : public Tree {

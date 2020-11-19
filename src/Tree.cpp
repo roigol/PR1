@@ -55,8 +55,9 @@ Tree *Tree::BfsTreeMaker(Session &session, int node) {// session should be const
             if (g->getEdges()[currTree->node][i] == 1 && !visited[i]) {//runs on node's neighbors
                 visited[i] = true;
                 child = Tree::createTree(session, i);
-                currTree->addChild(*child);
+                currTree->children.push_back(child);
                 queue.push(child);
+
             }
         }
     }
@@ -72,7 +73,7 @@ int Tree::getNode() const {  // check for const
 }
 
 bool Tree::hasChildren() {
-    return this->children.empty();
+    return !this->children.empty();
 }
 
 int Tree::getRank() const {
@@ -87,24 +88,20 @@ Tree::~Tree() { clear(); }
 
 void Tree::clear() {
     for (Tree *tree : children) {
-        if (tree != nullptr) {
-            delete tree;
-            tree = nullptr;
-        }
-        children.clear();
+        delete tree;
     }
 }
 
-//TODO copy constructor
+//copy constructor
 Tree::Tree(const Tree &other) : node(other.node), children({}) {
-       for (int i = 0; i < children.size(); i++) {
-           Tree *tree = other.children[i]->clone();
+       for (auto i : other.children) {
+           Tree *tree = i->clone();
            children.push_back(tree);
        }
 }
 
-// copy assignment operator//TODO move assignment operator =
-const Tree &Tree::operator=(const Tree &other) { // TODO check return type
+// copy assignment operator
+Tree &Tree::operator=(const Tree &other) {
     if (this != &other) {
         clear();
         node = other.node;
@@ -114,8 +111,27 @@ const Tree &Tree::operator=(const Tree &other) { // TODO check return type
     }
     return *this;
 }
-
-
+// Move Constructor
+Tree::Tree(Tree&& other) noexcept : node(other.node), children({}){
+    if(this != &other){
+        for(Tree* t : other.children){
+            this->children.push_back(t);
+        }
+        other.children.clear();
+    }
+}
+// Move Assignment Operator
+Tree& Tree::operator=(Tree &&other) noexcept {
+    if(this != &other) {
+        node = other.node;
+        clear();
+        for(Tree* t : other.children){
+            this->children.push_back(t);
+        }
+        other.children.clear();
+    }
+    return *this;
+}
 
 //---------------------CycleTree--------------------------
 
@@ -124,17 +140,14 @@ CycleTree::CycleTree(int rootLabel, int currCycle) : Tree(rootLabel), currCycle(
 }
 
 int CycleTree::traceTree() {
-    return traceTree2(*this, currCycle);
-} // Amit fixed and by adding 2 methods - hasChildren and getLeftChild.
+    return traceTree2(this, currCycle);
+}
 
 
-int CycleTree::traceTree2(Tree &currT, int cycle) {// TODO check if should change to * instead of &.
-    if (!currT.hasChildren() || cycle == 0)
-        return currT.getNode();
-    else {
-        traceTree2(currT.getLeftChild(), cycle - 1);
-    }
-    return currT.getNode();//TODO check - Roi added because it told me we need to return something.
+int CycleTree::traceTree2(Tree* currT, int cycle) {
+    if (!currT->hasChildren() || cycle == 0)
+        return currT->getNode();
+    return traceTree2(currT->getChildren()[0], cycle - 1);
 }
 
 
@@ -150,20 +163,25 @@ Tree *CycleTree::clone() const {
 MaxRankTree::MaxRankTree(int rootLabel) : Tree(rootLabel) {}
 
 int MaxRankTree::traceTree() {
-    MaxRankTree *maxRT = this;
-    MaxRankTree *temp = this;
-    this->traceTree2(maxRT->clone(), temp->clone());
+    Tree *maxRT = this;
+    Tree *curr = this;
+    maxRT = this->traceTree2(maxRT , curr);
     return maxRT->getNode();
 }
 
-void MaxRankTree::traceTree2(Tree *maxRT, Tree *temp) {
-    if (!temp->hasChildren())
-        return;
+Tree* MaxRankTree::traceTree2(Tree *maxRT, Tree *curr) {
+    if (!curr->hasChildren())
+        return maxRT;
     else {
-        if (temp->getRank() > maxRT->getRank())
-            maxRT = temp->clone();
-        for (auto &i : temp->getChildren())
-            this->traceTree2(maxRT, i->clone());
+        if (curr->getRank() > maxRT->getRank())
+            maxRT = curr;
+        for (Tree* elem : curr->getChildren()){
+            Tree* temp = traceTree2(maxRT, elem);
+            if(temp->getRank() > maxRT->getRank()){
+                maxRT = temp;
+            }
+        }
+        return maxRT;
     }
 }
 

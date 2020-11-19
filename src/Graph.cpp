@@ -7,20 +7,18 @@
 #include <utility>
 
 
-Graph::Graph(std::vector<std::vector<int>> matrix) : edges(std::move(matrix)), numOfCarrierNodes(0) {}
+Graph::Graph(std::vector<std::vector<int>> matrix) : edges(std::move(matrix)), numOfCarrierNodes(0) {
+    infectedNodes.assign(edges.size(), false);
+    carrierNodes.assign(edges.size(), false);
+}
 
 int Graph::NodeToInfect(int a) {
-    int min = -1;
-    int counter = 0;
-    bool found = false;
-    while (!found) {
-        if (!isInfected(edges[a][counter]) && !isCarrier(edges[a][counter])) {
-            min = edges[a][counter];
-            found = true;
+    for (int i = 0 ;i < edges.size() ;i++) {
+        if (edges[a][i]== 1 && !isInfected(i) && !isCarrier(i)) {
+            return i;
         }
-        counter++;
     }
-    return min;
+    return -1;
 }
 
 void Graph::infectNode(int nodeInd) {

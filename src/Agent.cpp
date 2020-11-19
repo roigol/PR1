@@ -8,7 +8,7 @@
 //---------------------Agent--------------------------
 Agent::Agent() = default;
 
-Agent::~Agent() = default;
+
 
 //---------------------CT--------------------------
 
@@ -24,7 +24,7 @@ void ContactTracer::act(Session &session) {
         Tree *infectedTree = Tree::BfsTreeMaker(session, infectedN);
         int toRemove = infectedTree->traceTree();
         session.getGraph()->removeEdges(toRemove);
-         delete infectedTree;
+        delete infectedTree;
     }
 }
 
@@ -44,9 +44,11 @@ void Virus::act(Session &session) {
     Graph *g = session.getGraph();
     if (g->getInfectedNodes()[nodeInd]) {
         int minN = g->NodeToInfect(nodeInd);
-        session.addAgent(Virus(minN));
-        g->getCarrierNodes()[minN] = true;
-        g->increaseNumOfCarrierNodes();
+        if (minN != -1) {
+            session.addAgent(Virus(minN));
+            g->getCarrierNodes()[minN] = true;
+            g->increaseNumOfCarrierNodes();
+        }
     } else {
         g->infectNode(nodeInd);
         g->getCarrierNodes()[nodeInd] = false;
@@ -54,4 +56,5 @@ void Virus::act(Session &session) {
         session.enqueueInfected(nodeInd);
     }
 }
+
 

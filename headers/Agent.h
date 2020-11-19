@@ -13,15 +13,10 @@ public:
     Agent();
 
     virtual void act(Session &session) = 0;
+
 // added:
+
     virtual Agent *clone() const = 0;
-//RULE OF FIVE:
-
-    virtual ~Agent();
-
-
-
-
 };
 
 class ContactTracer : public Agent {

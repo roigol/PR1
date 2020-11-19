@@ -11,7 +11,7 @@ Session::Session(const string &path) : g({}), treeType(), agents(), currCycle(0)
     json j;
     i >> j;
     g = Graph(j["graph"]);
-    g.setNumOfCarrierNodes();
+    //g.setNumOfCarrierNodes();//TODO delete
     parseTreeType(j["tree"]);
     parseAgents(j["agents"]);
 
@@ -31,6 +31,7 @@ void Session::parseAgents(const vector<tuple<string, int>> &agent) {
         if (get<0>(i) == "V") {
             agents.push_back(new Virus(get<1>(i)));
             g.infectNode(get<1>(i));//TODO methods to add new viruses
+            enqueueInfected(get<1>(i));
         } else
             agents.push_back(new ContactTracer());
     }
@@ -38,7 +39,8 @@ void Session::parseAgents(const vector<tuple<string, int>> &agent) {
 
 
 void Session::simulate() {
-    while (!g.done()) {
+
+    while (!g.done() || currCycle == 0) {
         int size = agents.size();
         for (int i = 0; i < size; i++) {
             agents[i]->act(*this);
@@ -86,12 +88,8 @@ Session::~Session() { clear(); }
 
 void Session::clear() {
     for (Agent *agent: agents) {
-        if (agent != nullptr) {
             delete agent;
-            agent = nullptr;
-        }
     }
-    agents.clear();
 }
 
 void Session::creatOutputFile() {

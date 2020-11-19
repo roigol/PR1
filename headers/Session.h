@@ -11,6 +11,7 @@
 #include "Tree.h"
 #include "json.hpp"
 #include <iostream>
+#include <fstream>
 
 using namespace std;
 
@@ -41,6 +42,8 @@ public:
     //added
 
     virtual ~Session();
+
+
 
     void clear();
 

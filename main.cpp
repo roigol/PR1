@@ -15,6 +15,5 @@ int main(int argc, char** argv){
     sess.simulate();
 
 //TODO check
-//TODO delete session
     return 0;
 }
