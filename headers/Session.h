@@ -43,7 +43,17 @@ public:
 
     virtual ~Session();
 
+    //copy constructor
+    Session (const Session &other);
 
+    //copy assignment operator
+    Session& operator=(const Session &other);
+
+    //move constructor
+    Session (Session&&) noexcept;
+
+    //move assignment operator
+    Session& operator=(Session &&other) noexcept;
 
     void clear();
 

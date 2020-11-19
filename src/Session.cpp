@@ -17,7 +17,7 @@ Session::Session(const string &path) : g({}), treeType(), agents(), currCycle(0)
 
 }
 
-void Session::parseTreeType(const string& type) { //check if needs to change to string& type
+void Session::parseTreeType(const string &type) { //check if needs to change to string& type
     if (type == "M")
         treeType = MaxRank;
     else if (type == "R")
@@ -88,7 +88,7 @@ Session::~Session() { clear(); }
 
 void Session::clear() {
     for (Agent *agent: agents) {
-            delete agent;
+        delete agent;
     }
 }
 
@@ -105,6 +105,58 @@ void Session::creatOutputFile() {
     std::ofstream file("output.json");
     file << output;
 }
+
+//copy constructor
+Session::Session(const Session &other) : g(other.g), treeType(other.treeType), agents({}), currCycle(other.currCycle),
+                                         infectedQueue(other.infectedQueue) {
+    for (Agent *agent: other.agents)
+        addAgent(*agent);
+}
+
+//move constructor
+Session::Session(Session &&other) noexcept: g(other.g), treeType(other.treeType), agents({}),
+                                            currCycle(other.currCycle),
+                                            infectedQueue(other.infectedQueue) {
+    for (Agent *agent: other.agents) {
+        agents.push_back(agent);
+    }
+    other.agents.clear();
+}
+
+//copy assignment operator
+Session &Session::operator=(const Session &other) {
+    if (this != &other) {
+        clear();
+        g = other.g;
+        treeType = other.treeType;
+        currCycle = other.currCycle;
+        infectedQueue = other.infectedQueue;//TODO clear?
+        for (Agent *agent : other.agents) {
+            addAgent(*agent);
+        }
+    }
+    return *this;
+}
+
+//Move Assignment Operator
+Session &Session::operator=(Session &&other) noexcept {
+    if (this != &other) {
+        clear();
+        g = other.g;
+        treeType = other.treeType;
+        currCycle = other.currCycle;
+        infectedQueue = other.infectedQueue;//TODO clear?
+        for (Agent *agent : other.agents) {
+            agents.push_back(agent);
+        }
+        other.agents.clear();
+    }
+    return *this;
+}
+
+
+
+
 
 
 

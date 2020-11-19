@@ -19,15 +19,21 @@ public:
 
     //added
 
-    // RULE OF FIVE
+    // RULE OF FIVE:
+
+    //destructor
     virtual ~Tree();
 
-    Tree& operator=(const Tree& other);
+    //copy assignment operator
+    Tree& operator=(const Tree& other);//TODO const???
 
+    //Move Assignment Operator
     Tree& operator=(Tree &&other) noexcept;
 
-    Tree (const Tree&) ;
+    //copy constructor
+    Tree (const Tree& other) ;
 
+    //move constructor
     Tree(Tree&&) noexcept;
 
     void clear();

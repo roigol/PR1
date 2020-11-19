@@ -42,19 +42,19 @@ int Virus::getNodeInd() const {
 
 void Virus::act(Session &session) {
     Graph *g = session.getGraph();
-    if (g->getInfectedNodes()[nodeInd]) {
-        int minN = g->NodeToInfect(nodeInd);
-        if (minN != -1) {
-            session.addAgent(Virus(minN));
-            g->getCarrierNodes()[minN] = true;
-            g->increaseNumOfCarrierNodes();
-        }
-    } else {
+    //if the node carries a virus - infect it.
+    if(!g->getInfectedNodes()[nodeInd]){
         g->infectNode(nodeInd);
         g->getCarrierNodes()[nodeInd] = false;
         g->decreaseNumOfCarrierNodes();
         session.enqueueInfected(nodeInd);
     }
+    //infect neighbor (if possible).
+    int nodeToInfectInd = g->NodeToInfect(nodeInd);
+    if(nodeToInfectInd != -1){
+        session.addAgent(Virus(nodeToInfectInd));
+        g->getCarrierNodes()[nodeInd] = true;
+        g->increaseNumOfCarrierNodes();
+    }
 }
-
 

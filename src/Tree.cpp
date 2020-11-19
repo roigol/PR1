@@ -84,6 +84,7 @@ vector<Tree *> Tree::getChildren() const {
     return children;
 }
 
+//destructor
 Tree::~Tree() { clear(); }
 
 void Tree::clear() {
@@ -94,10 +95,10 @@ void Tree::clear() {
 
 //copy constructor
 Tree::Tree(const Tree &other) : node(other.node), children({}) {
-       for (auto i : other.children) {
-           Tree *tree = i->clone();
-           children.push_back(tree);
-       }
+    for (auto i : other.children) {
+        Tree *tree = i->clone();//TODO addChild()
+        children.push_back(tree);
+    }
 }
 
 // copy assignment operator
@@ -106,26 +107,26 @@ Tree &Tree::operator=(const Tree &other) {
         clear();
         node = other.node;
         for (Tree *tree: other.children) {
-            addChild(*tree);
+            addChild(*tree);//adds a clone;
         }
     }
     return *this;
 }
+
 // Move Constructor
-Tree::Tree(Tree&& other) noexcept : node(other.node), children({}){
-    if(this != &other){
-        for(Tree* t : other.children){
-            this->children.push_back(t);
-        }
-        other.children.clear();
+Tree::Tree(Tree &&other) noexcept: node(other.node), children({}) {
+    for (Tree *t : other.children) {
+        this->children.push_back(t);
     }
+    other.children.clear();
 }
+
 // Move Assignment Operator
-Tree& Tree::operator=(Tree &&other) noexcept {
-    if(this != &other) {
-        node = other.node;
+Tree &Tree::operator=(Tree &&other) noexcept {
+    if (this != &other) {
         clear();
-        for(Tree* t : other.children){
+        node = other.node;
+        for (Tree *t : other.children) {
             this->children.push_back(t);
         }
         other.children.clear();
@@ -144,7 +145,7 @@ int CycleTree::traceTree() {
 }
 
 
-int CycleTree::traceTree2(Tree* currT, int cycle) {
+int CycleTree::traceTree2(Tree *currT, int cycle) {
     if (!currT->hasChildren() || cycle == 0)
         return currT->getNode();
     return traceTree2(currT->getChildren()[0], cycle - 1);
@@ -165,19 +166,19 @@ MaxRankTree::MaxRankTree(int rootLabel) : Tree(rootLabel) {}
 int MaxRankTree::traceTree() {
     Tree *maxRT = this;
     Tree *curr = this;
-    maxRT = this->traceTree2(maxRT , curr);
+    maxRT = this->traceTree2(maxRT, curr);
     return maxRT->getNode();
 }
 
-Tree* MaxRankTree::traceTree2(Tree *maxRT, Tree *curr) {
+Tree *MaxRankTree::traceTree2(Tree *maxRT, Tree *curr) {
     if (!curr->hasChildren())
         return maxRT;
     else {
         if (curr->getRank() > maxRT->getRank())
             maxRT = curr;
-        for (Tree* elem : curr->getChildren()){
-            Tree* temp = traceTree2(maxRT, elem);
-            if(temp->getRank() > maxRT->getRank()){
+        for (Tree *elem : curr->getChildren()) {
+            Tree *temp = traceTree2(maxRT, elem);
+            if (temp->getRank() > maxRT->getRank()) {
                 maxRT = temp;
             }
         }
