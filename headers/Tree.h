@@ -44,7 +44,7 @@ public:
 
     Tree &getLeftChild() const;
 
-    std::vector<Tree *> getChildren() const; // TODO Check  &getChildren why the & there.
+    std::vector<Tree *> getChildren() const;
 
     int getNode() const;
 

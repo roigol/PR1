@@ -48,7 +48,7 @@ void Session::simulate() {
         currCycle++;
     }
     creatOutputFile();
-    delete this;
+    //delete this;//TODO this is the row i deleted after the valgrind run
 }
 
 void Session::addAgent(const Agent &agent) {

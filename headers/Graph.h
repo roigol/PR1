@@ -26,9 +26,9 @@ public:
 
     std::vector<std::vector<int>> getEdges();
 
-    std::vector<bool> getInfectedNodes();
+    std::vector<bool> &getInfectedNodes();
 
-    std::vector<bool> getCarrierNodes();
+    std::vector<bool>& getCarrierNodes();
 
     void increaseNumOfCarrierNodes();
 

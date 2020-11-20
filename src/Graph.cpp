@@ -54,11 +54,11 @@ bool Graph::done() const {
     return numOfCarrierNodes == 0;
 }
 
-std::vector<bool> Graph::getInfectedNodes() {
+std::vector<bool> &Graph::getInfectedNodes() {
     return infectedNodes;
 }
 
-std::vector<bool> Graph::getCarrierNodes() {
+std::vector<bool> &Graph::getCarrierNodes() {
     return carrierNodes;
 }
 

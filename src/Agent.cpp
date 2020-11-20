@@ -53,7 +53,7 @@ void Virus::act(Session &session) {
     int nodeToInfectInd = g->NodeToInfect(nodeInd);
     if(nodeToInfectInd != -1){
         session.addAgent(Virus(nodeToInfectInd));
-        g->getCarrierNodes()[nodeInd] = true;
+        g->getCarrierNodes()[nodeToInfectInd] = true;
         g->increaseNumOfCarrierNodes();
     }
 }

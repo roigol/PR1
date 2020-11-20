@@ -6,10 +6,10 @@
 Tree::Tree(int rootLabel) : node(rootLabel) {}
 
 
-//TODO copy constructor:
+
 
 void Tree::addChild(const Tree &child) {
-    children.push_back(child.clone());  //TODO check.
+    children.push_back(child.clone());
 }
 
 

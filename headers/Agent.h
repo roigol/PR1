@@ -40,7 +40,7 @@ public:
     virtual void act(Session &session);
 
 private:
-    const int nodeInd = 0;// TODO =0??
+    const int nodeInd = 0;
 
 };
 
