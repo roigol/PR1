@@ -1,8 +1,8 @@
 # All Targets
-all: cTrace
+all: 
 
 # Tool invocations
-# Executable "cTrace" depends on the files main.o Session.o Graph.o Agent.o Tree.o
+# Executable "PR1" depends on the files main.o Session.o Graph.o Agent.o Tree.o
 cTrace: bin/main.o  bin/Session.o   bin/Graph.o bin/Agent.o bin/Tree.o
 	@echo 'Building target: cTrace'
 	@echo 'Invoking: C++ Linker'

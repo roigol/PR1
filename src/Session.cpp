@@ -96,7 +96,7 @@ void Session::creatOutputFile() {
     json output;
     output["graph"] = g.getEdges();
     vector<int> infected;
-    for (int i = 0; i < g.getInfectedNodes().size(); i++) {
+    for (unsigned int i = 0; i < g.getInfectedNodes().size(); i++) {
         if (g.getInfectedNodes()[i])
             infected.push_back(i);
     }

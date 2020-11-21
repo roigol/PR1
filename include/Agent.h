@@ -11,7 +11,7 @@ class Session;
 class Agent {
 public:
     Agent();
-
+    virtual ~Agent();
     virtual void act(Session &session) = 0;
 
 // added:

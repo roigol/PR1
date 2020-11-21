@@ -7,13 +7,13 @@
 #include <utility>
 
 
-Graph::Graph(std::vector<std::vector<int>> matrix) : edges(std::move(matrix)), numOfCarrierNodes(0) {
+Graph::Graph(std::vector<std::vector<int>> matrix) : infectedNodes({}),carrierNodes({}), edges(std::move(matrix)), numOfCarrierNodes(0) {
     infectedNodes.assign(edges.size(), false);
     carrierNodes.assign(edges.size(), false);
 }
 
 int Graph::NodeToInfect(int a) {
-    for (int i = 0 ;i < edges.size() ;i++) {
+    for (unsigned int i = 0 ;i < edges.size() ;i++) {
         if (edges[a][i]== 1 && !isInfected(i) && !isCarrier(i)) {
             return i;
         }
@@ -34,7 +34,7 @@ bool Graph::isCarrier(int nodeInd) {
 }
 
 void Graph::removeEdges(int nodeInd) {
-    for (int i = 0; i < edges[nodeInd].size(); i++) {
+    for (unsigned int i = 0; i < edges[nodeInd].size(); i++) {
         if (edges[nodeInd][i] == 1) {
             edges[nodeInd][i] = 0;
             edges[i][nodeInd] = 0;

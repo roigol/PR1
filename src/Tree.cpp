@@ -3,7 +3,7 @@
 
 //---------------------Tree--------------------------
 
-Tree::Tree(int rootLabel) : node(rootLabel) {}
+Tree::Tree(int rootLabel) : node(rootLabel), children({}) {}
 
 
 
