@@ -1,5 +1,5 @@
 
-#include "../headers/Tree.h"
+#include "../include/Tree.h"
 
 //---------------------Tree--------------------------
 
@@ -132,6 +132,10 @@ Tree &Tree::operator=(Tree &&other) noexcept {
         other.children.clear();
     }
     return *this;
+}
+
+int Tree::getRootLabel() const {  // TODO for the tester
+    return node;
 }
 
 //---------------------CycleTree--------------------------

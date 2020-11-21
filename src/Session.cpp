@@ -1,5 +1,5 @@
 
-#include "../headers/Session.h"
+#include "../include/Session.h"
 
 
 using json = nlohmann::json;
@@ -102,7 +102,7 @@ void Session::creatOutputFile() {
     }
     output["infected"] = infected;
     infected.clear();//TODO check if needed
-    std::ofstream file("output.json");
+    std::ofstream file("./output.json");
     file << output;
 }
 

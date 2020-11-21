@@ -2,7 +2,7 @@
 // Created by spl211 on 10/11/2020.
 //
 
-#include "../headers/Graph.h"
+#include "../include/Graph.h"
 
 #include <utility>
 
